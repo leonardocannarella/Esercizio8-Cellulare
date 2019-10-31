@@ -11,13 +11,14 @@ public class Cellulare
     private String modello;
     private String operatore;
     private String numTel;
-    private String sms;
-    private String box[];
+    private String sendbox[];
+    private String receivedbox[];
     private boolean acceso;
         
     public Cellulare(String marca, String modello, String operatore, String numTel)
     {
-        box=new String[20];
+        sendbox=new String[20];
+        receivedbox=new String[20];
         setMarca(marca);
         setModello(modello);
         setOperatore(operatore);
@@ -71,6 +72,7 @@ public class Cellulare
     
     public String send(Cellulare dest, String num, String testo)
     {
+        int i=0;
         boolean esito=false;
         if(acceso==true)
         {
@@ -79,7 +81,13 @@ public class Cellulare
             {
                 if(num==dest.getNumTel())
                 {
-                    receive(dest, testo);
+                    dest.receive(testo);
+                    while((sendbox[i]!=null)&&(i<20))
+                    {
+                        i++;
+                    }
+                    if (sendbox[i]==null)
+                        sendbox[i]=testo;
                     return "Il messaggio è stato inviato con successo!";
                 }
                 return "I parametri sono errati!";
@@ -91,26 +99,52 @@ public class Cellulare
             return "Il telefono è spento!";
     }
     
-    public String receive(Cellulare dest, String testo)
+    public void receive(String testo)
     {
         int i=0;
-        while((dest.box[i]!=null)&&(i<20))
+        while((receivedbox[i]!=null)&&(i<20))
         {
             i++;
         }
-        if(dest.box[i]==null)
+        if(receivedbox[i]==null)
         {
-            dest.box[i]=testo;
-            return "Il messaggio è stato inviato!";
+            receivedbox[i]=testo;
         }
-        else
-            return "La casella dei messaggi è piena!";
     }
     
     
     public String delete(int n)
     {
-        box[n]=null;
+        receivedbox[n]=null;
+        sendbox[n]=null;
         return "Il messaggio "+n+ " è stato cancellato!";
+    }
+    
+    public String toString()
+    {
+        int i=0;
+        String r="ricevuti: \n";
+        String s="inviati: \n";
+        int a;
+        while(i!=20)
+        {
+            a=i+1;
+            if((receivedbox[i])!=null)
+                r=r+" mess "+ a+ " "+receivedbox[i]+"\n";
+            i++;
+        }
+        
+        i=0;
+        while(i!=20)
+        {
+            a=i+1;
+            if((sendbox[i])!=null)
+                s=s+" mess "+ a+ " "+sendbox[i]+"\n";
+            i++;
+        }
+        
+        return r+s;
+        
+        
     }
 }

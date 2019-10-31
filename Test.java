@@ -20,5 +20,8 @@ public class Test
         
         System.out.println(signo.send(nuriel, "3665047724", "Ciao Nuri"));
         System.out.println(signo.send(nuriel, "3665047724", "Tutto bene tu?"));
+        
+        System.out.println(signo.toString());
+        //System.out.println(nuriel.toString());
     }
 }
